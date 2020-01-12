@@ -1,6 +1,6 @@
-# HologramDisplays
+# DisplayAPI
 
-Hologram API, a library to create holograms on Minecraft servers (1.8.8 ONLY)
+Display API, a library to create holograms on Minecraft servers (1.8.8 ONLY)
 **You must add the API as your project dependencies and add this to plugins folder**
 
 ## Features:
