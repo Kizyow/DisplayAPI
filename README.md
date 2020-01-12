@@ -49,8 +49,8 @@ Create a client-side hologram:
 ```java
 // A list of Text for the hologram (dynamics variables)
 List<Text> listText = new ArrayList<>();
-listText.add(() -> "Hello everyone");
-listText.add(() -> "I'm a server-side hologram");
+listText.add(() -> "Hello " + player.getName());
+listText.add(() -> "I'm a client-side hologram");
 
 // Create the hologram for the player only!
 hologramManager.createClient(player, listText, location, refresh);
