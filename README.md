@@ -58,6 +58,8 @@ hologramManager.createClient(player, listText, location, refresh);
 
 Interact with the hologram:
 ```java
+Hologram hologram = hologramManager.createServer(listText, location, refresh);
+
 // When a player interact on the hologram, you can do somes actions!
 hologram.interact(new Action(){
     @Override
