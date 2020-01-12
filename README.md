@@ -44,6 +44,7 @@ listText.add(() -> "I'm a server-side hologram");
 // Create the hologram, if a hologram exist on this location, it will return the hologram on location
 hologramManager.createServer(listText, location, refresh);
 ```
+![See this image for the result](https://prnt.sc/qmldva)
 
 Create a client-side hologram:
 ```java
@@ -68,6 +69,8 @@ hologram.interact(new Action(){
   }
 });
 ```
+
+![See this image for the result](https://prnt.sc/qmldaq)
 
 If you have a Hologram object, you can do with the HologramManager:
 ```java
