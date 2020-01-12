@@ -88,10 +88,10 @@ hologramManager.remove(hologram);
 ## Downloads:
 
   ### Manual:
-  Download the latest version on the [Releases](https://github.com/Watch54/HologramDisplays/releases).
+  Download the latest version on the [Releases](https://github.com/Watch54/DisplayAPI/releases).
   
   ### Gradle/Maven
   It will come later!
 
 ## Problems:
-If you have somes issues with the API or if you have an idea, create an issue [here](https://github.com/Watch54/HologramDisplays/issues)
+If you have somes issues with the API or if you have an idea, create an issue [here](https://github.com/Watch54/DisplayAPI/issues)
