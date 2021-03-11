@@ -90,9 +90,12 @@ public class HologramManager {
         hologramMap.entrySet().removeIf(entry -> entry.getValue().equals(hologram));
     }
 
-    public void clear(){
+    public void clear() {
         hologramMap.values().forEach(Hologram::remove);
         hologramMap.clear();
     }
 
+    public Map<Block, Hologram> getHologramMap() {
+        return hologramMap;
+    }
 }
