@@ -22,24 +22,24 @@ public class HologramClient extends Hologram {
     private Player player;
     private Map<EntityArmorStand, Text> entityArmorStandTextMap;
 
-    public HologramClient(Player player, List<Text> textList, Location location){
+    public HologramClient(Player player, List<Text> textList, Location location) {
         super(textList, location);
         this.player = player;
         this.entityArmorStandTextMap = new HashMap<>();
     }
 
     @Override
-    public void display(){
-        if(player == null) throw new NullPointerException("Player cannot be null!");
-        if(this.getTextList() == null) throw new NullPointerException("Texts cannot be null!");
-        if(this.getLocation() == null) throw new NullPointerException("Location cannot be null!");
+    public void display() {
+        if (player == null) throw new NullPointerException("Player cannot be null!");
+        if (this.getTextList() == null) throw new NullPointerException("Texts cannot be null!");
+        if (this.getLocation() == null) throw new NullPointerException("Location cannot be null!");
 
         Location locationClone = this.getLocation().clone();
 
         CraftPlayer craftPlayer = (CraftPlayer) player;
         CraftWorld craftWorld = (CraftWorld) locationClone.getWorld();
 
-        for(Text text : this.getTextList()){
+        for (Text text : this.getTextList()) {
             EntityArmorStand armorStand = new EntityArmorStand(craftWorld.getHandle(), locationClone.getX(), locationClone.getY(), locationClone.getZ());
             armorStand.setGravity(false);
             armorStand.setInvisible(true);
@@ -58,17 +58,17 @@ public class HologramClient extends Hologram {
     }
 
     @Override
-    public void update(){
+    public void update() {
         this.remove();
         this.display();
     }
 
     @Override
-    public void remove(){
+    public void remove() {
         CraftPlayer craftPlayer = (CraftPlayer) player;
 
         List<EntityArmorStand> armorStandClone = new ArrayList<>(entityArmorStandTextMap.keySet());
-        for(EntityArmorStand armorStand : armorStandClone){
+        for (EntityArmorStand armorStand : armorStandClone) {
 
             PacketPlayOutEntityDestroy entityDestroy = new PacketPlayOutEntityDestroy(armorStand.getId());
             craftPlayer.getHandle().playerConnection.sendPacket(entityDestroy);
@@ -78,15 +78,8 @@ public class HologramClient extends Hologram {
         }
     }
 
-    @Override
+    /*@Override
     public void interact(Action action) {
-        BlockIterator iter = new BlockIterator(player, 3);
-        while (iter.hasNext()) {
-            if (iter.next().equals(location.getBlock())) {
-                action.execute(player);
-            }
-        }
-        /*
         final int[] id = {0};
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler(){
             @Override
@@ -111,11 +104,11 @@ public class HologramClient extends Hologram {
             }
         };
         ChannelPipeline channelPipeline = ((CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        channelPipeline.addBefore("packet_handler", player.getName() + "/" + id[0], channelDuplexHandler);*/
-    }
+        channelPipeline.addBefore("packet_handler", player.getName() + "/" + id[0], channelDuplexHandler);
+    }*/
 
     @Override
-    public void teleport(Location location){
+    public void teleport(Location location) {
         this.setLocation(location);
         Location locationClone = location.clone();
 
@@ -126,10 +119,16 @@ public class HologramClient extends Hologram {
     }
 
     @Override
-    public void setTextList(List<Text> textList){
+    public void setTextList(List<Text> textList) {
         this.textList = textList;
         this.update();
-
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

@@ -1,19 +1,22 @@
 package fr.watch54.displays.listeners;
 
-import fr.watch54.displays.holograms.Hologram;
+import fr.watch54.displays.holograms.client.HologramClient;
 import fr.watch54.displays.holograms.server.HologramServer;
-import fr.watch54.displays.interfaces.Action;
 import fr.watch54.displays.managers.HologramManager;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright (C) gameszaum, all rights reserved, unauthorized
@@ -29,27 +32,37 @@ public class Listeners implements Listener {
         this.hologramManager = hologramManager;
     }
 
-    @EventHandler
-    public void onInteract(PlayerInteractAtEntityEvent event) {
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void clientSide(PlayerInteractEvent event) {
+        if (hologramManager.getHologramMap().size() > 0 && hologramManager.getHologramMap().values().stream().anyMatch(hologram -> hologram instanceof HologramClient)) {
+            for (Block block : getNearbyBlocks(event.getPlayer(), 4)) {
+                if (hologramManager.containsHologram(block)) {
+                    hologramManager.getHologram(block).filter(hologram -> hologram instanceof HologramClient).map(hologram -> (HologramClient) hologram).ifPresent(hologram -> {
+                        if (hologram.getPlayer().getName().equals(event.getPlayer().getName())) {
+                            if (hologram.getAction() != null) {
+                                hologram.getAction().execute(event.getPlayer());
+                            }
+                        }
+                    });
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void serverSide(PlayerInteractAtEntityEvent event) {
         Player player = event.getPlayer();
         Entity entity = event.getRightClicked();
 
         if (entity instanceof ArmorStand) {
-
             Block block = entity.getLocation().getBlock();
 
             if (hologramManager.containsHologram(block)) {
-
-                Optional<Hologram> optionalHologram = hologramManager.getHologram(block);
-
-                optionalHologram.ifPresent(hologram -> {
-
-                    if (hologram instanceof HologramServer) {
-
-                        HologramServer server = (HologramServer) hologram;
-                        Action action = server.getAction();
-
-                        if (action != null) action.execute(player);
+                hologramManager.getHologram(block).filter(hologram -> hologram instanceof HologramServer).map(hologram -> (HologramServer) hologram).ifPresent(hologram -> {
+                    if (hologram.getAction() != null) {
+                        hologram.getAction().execute(player);
                     }
                 });
             }
@@ -59,6 +72,20 @@ public class Listeners implements Listener {
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
         event.setCancelled(true);
+    }
+
+    private List<Block> getNearbyBlocks(Player player, int radius) {
+        List<Block> blocks = new ArrayList<>();
+        Location location = player.getLocation();
+
+        for (int x = location.getBlockX() - radius; x <= location.getBlockX() + radius; x++) {
+            for (int y = location.getBlockY() - radius; y <= location.getBlockY() + radius; y++) {
+                for (int z = location.getBlockZ() - radius; z <= location.getBlockZ() + radius; z++) {
+                    blocks.add(location.getWorld().getBlockAt(x, y, z));
+                }
+            }
+        }
+        return blocks;
     }
 
 }

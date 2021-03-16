@@ -15,7 +15,6 @@ public class HologramTask extends BukkitRunnable {
         this.hologram = hologram;
         this.hologramManager = hologramManager;
         this.refresh = refresh;
-
     }
 
     @Override

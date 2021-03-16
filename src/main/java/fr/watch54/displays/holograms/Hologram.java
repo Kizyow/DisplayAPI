@@ -11,6 +11,7 @@ public abstract class Hologram {
     protected List<Text> textList;
     protected Location location;
     protected boolean spawned;
+    protected Action action;
 
     public Hologram(List<Text> textList, Location location){
         this.textList = textList;
@@ -49,10 +50,16 @@ public abstract class Hologram {
 
     public abstract void remove();
 
-    public abstract void interact(Action action);
+    public void interact(Action action) {
+        this.action = action;
+    }
 
     public void teleport(Location location){
         this.update();
+    }
+
+    public Action getAction() {
+        return action;
     }
 
 }

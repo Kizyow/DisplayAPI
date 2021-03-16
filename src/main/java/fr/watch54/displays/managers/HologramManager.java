@@ -22,16 +22,16 @@ public class HologramManager {
     private Plugin plugin;
     private Map<Block, Hologram> hologramMap;
 
-    public HologramManager(Plugin plugin){
+    public HologramManager(Plugin plugin) {
         this.plugin = plugin;
         this.hologramMap = new HashMap<>();
 
         Bukkit.getPluginManager().registerEvents(new Listeners(this), plugin);
     }
 
-    public HologramServer createServer(List<Text> textList, Location location, boolean refresh){
+    public HologramServer createServer(List<Text> textList, Location location, boolean refresh) {
         Block block = location.getBlock();
-        if(this.containsHologram(block)) return (HologramServer) hologramMap.get(block);
+        if (this.containsHologram(block)) return (HologramServer) hologramMap.get(block);
 
         HologramServer hologramServer = new HologramServer(textList, location);
         Bukkit.getScheduler().runTaskLater(plugin, hologramServer::display, 20);
@@ -45,7 +45,7 @@ public class HologramManager {
 
     }
 
-    public HologramClient createClient(Player player, List<Text> textList, Location location, boolean refresh){
+    public HologramClient createClient(Player player, List<Text> textList, Location location, boolean refresh) {
         HologramClient hologram = new HologramClient(player, textList, location);
         Bukkit.getScheduler().runTaskLater(plugin, hologram::display, 20);
 
@@ -58,19 +58,19 @@ public class HologramManager {
 
     }
 
-    public void teleport(Hologram hologram, Location location){
-        if(!hologramMap.containsValue(hologram)) return;
+    public void teleport(Hologram hologram, Location location) {
+        if (!hologramMap.containsValue(hologram)) return;
 
         hologramMap.entrySet().removeIf(entry -> entry.getValue().equals(hologram));
         hologramMap.put(location.getBlock(), hologram);
         hologram.teleport(location);
     }
 
-    public boolean containsHologram(Block block){
+    public boolean containsHologram(Block block) {
         return hologramMap.keySet().stream().anyMatch(blockMap -> block.getX() == blockMap.getX() && block.getZ() == blockMap.getZ());
     }
 
-    public Optional<Hologram> getHologram(Block block){
+    public Optional<Hologram> getHologram(Block block) {
         Optional<Block> blockFinal = hologramMap
                 .keySet()
                 .stream()
@@ -79,12 +79,14 @@ public class HologramManager {
 
         Hologram hologram = null;
 
-        if(blockFinal.isPresent()) hologram = hologramMap.get(blockFinal.get());
+        if (blockFinal.isPresent()) {
+            hologram = hologramMap.get(blockFinal.get());
+        }
         return Optional.ofNullable(hologram);
     }
 
-    public void remove(Hologram hologram){
-        if(!hologramMap.containsValue(hologram)) return;
+    public void remove(Hologram hologram) {
+        if (!hologramMap.containsValue(hologram)) return;
 
         hologram.remove();
         hologramMap.entrySet().removeIf(entry -> entry.getValue().equals(hologram));
