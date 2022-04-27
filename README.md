@@ -1,7 +1,7 @@
 # DisplayAPI
 
 Display API, a library to create holograms on Minecraft servers (1.8.8 ONLY)
-**You must add the API as your project dependencies and add this to plugins folder**
+**You must add the API as your project dependencies and use the scope compile**
 
 ## Features:
   - For now, only 1.8.8 because i'm using some reflections
@@ -15,7 +15,6 @@ Display API, a library to create holograms on Minecraft servers (1.8.8 ONLY)
   - Make it no blinking on client-side
   - Make it multi-version
   - Add ProtocolLib as dependencies for safe-use
-  - Add Gradle/Maven dependences for this project
 
 ## Examples:
 
